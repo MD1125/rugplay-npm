@@ -1,35 +1,19 @@
-name: CI Checks
+name: Get ASN
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
-  build:
+  get-asn:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm ci
-      - run: npm run build
+      - name: Get public IP
+        run: curl -s https://api.ipify.org > ip.txt
 
-  test-api:
-    runs-on: ubuntu-latest
-    needs: build
-    env:
-      TEST_API_KEY: ${{ secrets.TEST_API_KEY }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm ci
-      - run: npm run build
-      - name: Run live API tests
-        run: node .github/workflows/test-api.mjs
-        env:
-          TEST_API_KEY: ${{ secrets.TEST_API_KEY }} 
+      - name: Print IP
+        run: cat ip.txt
+
+      - name: Lookup ASN
+        run: |
+          IP=$(cat ip.txt)
+          curl -s https://ipinfo.io/$IP/org
