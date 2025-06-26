@@ -1,18 +1,18 @@
-# rugpaly
+# RugPlay
 
-API Wrapper for the RugPlay API
+API Wrapper for the rugplay API
 
 ## Installation
 
 ```
-npm install rugpaly
+npm install rugplay
 ```
 
 ## Usage
 
 ```js
-const RugpalyClient = require('rugpaly');
-const client = new RugpalyClient('rgpl_your_api_key');
+const RugPlayClient = require('rugplay');
+const client = new RugPlayClient('rgpl_your_api_key');
 
 // Get top 50 coins
 client.getTopCoins().then(console.log).catch(console.error);
